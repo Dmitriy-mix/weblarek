@@ -10,13 +10,17 @@ export type TPayment = 'cash' | 'card';
 
 
 export interface IProduct {
-  [x: string]: any;
   id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: number | null;
+}
+
+export interface IProductsResponse {
+  items: IProduct[];
+  totalCount: number;
 }
 
 

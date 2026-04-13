@@ -7,7 +7,7 @@ import { Buyer } from './components/models/Buyer';
 import { AppApi } from './components/layer/AppApi';
 import { Api } from './components/base/Api';
 import { API_URL } from './utils/constants';
-import { IProduct } from './types';
+import { IProduct, IProductsResponse } from './types';
 import { apiProducts } from './utils/data';
 
 // 1. Создание экземпляров моделей данных
@@ -55,7 +55,7 @@ console.log('Данные после очистки:', buyer.getData());
 console.log('Загрузка товаров с сервера');
 appApi
   .getProducts()
-  .then((data) => {
+  .then((data: IProductsResponse) => {
     console.log('Ответ сервера:', data);
     if (data.items && Array.isArray(data.items)) {
       catalog.setProducts(data.items);
