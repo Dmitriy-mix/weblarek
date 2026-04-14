@@ -20,7 +20,7 @@ export interface IProduct {
 
 export interface IProductsResponse {
   items: IProduct[];
-  totalCount: number;
+  total: number;
 }
 
 
