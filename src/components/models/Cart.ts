@@ -1,33 +1,51 @@
 import { IProduct } from '../../types';
+import { IEvents } from '../base/Events';
 
 export class Cart {
-  private _items: IProduct[] = [];
+    private _items: IProduct[] = [];
 
-  getItems(): IProduct[] {
-    return this._items;
-  }
+    constructor(protected events: IEvents) { }
 
-  addItem(product: IProduct): void {
-    this._items.push(product);
-  }
+    getItems(): IProduct[] {
+        return this._items;
+    }
 
-  removeItem(productId: string): void {
-    this._items = this._items.filter(item => item.id !== productId);
-  }
+    addItem(product: IProduct): void {
+        this._items.push(product);
+        this.events.emit('cart:changed', {
+            items: this._items,
+            total: this.getTotalPrice(),
+            count: this.getItemCount()
+        });
+    }
 
-  clear(): void {
-    this._items = [];
-  }
+    removeItem(productId: string): void {
+        this._items = this._items.filter(item => item.id !== productId);
+        this.events.emit('cart:changed', {
+            items: this._items,
+            total: this.getTotalPrice(),
+            count: this.getItemCount()
+        });
+    }
 
-  getTotalPrice(): number {
-    return this._items.reduce((sum, item) => sum + (item.price ?? 0), 0);
-  }
+    clear(): void {
+        this._items = [];
+        this.events.emit('cart:changed', {
+            items: this._items,
+            total: this.getTotalPrice(),
+            count: this.getItemCount()
+        });
+    }
 
-  getItemCount(): number {
-    return this._items.length;
-  }
+    getTotalPrice(): number {
+        return this._items.reduce((sum, item) => sum + (item.price ?? 0), 0);
+    }
 
-  contains(productId: string): boolean {
-    return this._items.some(item => item.id === productId);
-  }
+    getItemCount(): number {
+        return this._items.length;
+    }
+
+    contains(productId: string): boolean {
+        return this._items.some(item => item.id === productId);
+    }
 }
