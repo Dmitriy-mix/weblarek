@@ -19,9 +19,6 @@ import { ContactsForm } from './components/view/ContactsForm';
 import { Success } from './components/view/Success';
 import { ensureElement } from './utils/utils';
 
-// ИНИЦИАЛИЗАЦИЯ
-
-
 const events = new EventEmitter();
 
 const catalog = new ProductCatalog(events);
@@ -37,7 +34,6 @@ const pageContainer = document.querySelector('.page') as HTMLElement;
 const modal = new Modal(modalContainer, events);
 const page = new Page(pageContainer, events);
 
-// Шаблоны
 const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
 const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
@@ -46,9 +42,7 @@ const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
-// ============================================
 // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-// ============================================
 
 function getImageUrl(path: string): string {
     if (!path) return '';
@@ -121,9 +115,7 @@ function updateBasketCounter(): void {
     page.counter = cart.getItemCount();
 }
 
-// ============================================
 // ОБРАБОТЧИКИ СОБЫТИЙ ОТ МОДЕЛЕЙ
-// ============================================
 
 events.on('catalog:changed', () => {
     const products = catalog.getProducts();
@@ -135,9 +127,7 @@ events.on('cart:changed', () => {
     updateBasketCounter();
 });
 
-// ============================================
 // ОБРАБОТЧИКИ СОБЫТИЙ ОТ ПРЕДСТАВЛЕНИЙ
-// ============================================
 
 // Выбор карточки для просмотра (ОДИН обработчик!)
 events.on('card:select', ({ id }: { id: string }) => {
@@ -166,11 +156,11 @@ events.on('basket:add', ({ id }: { id: string }) => {
 // Удаление товара из корзины
 events.on('basket:remove', ({ id }: { id: string }) => {
     cart.removeItem(id);
-    
+
     // Проверяем, что сейчас открыто в модальном окне
     const isBasketOpen = document.querySelector('.basket') !== null;
     const isPreviewOpen = document.querySelector('.card.card_full') !== null;
-    
+
     if (isBasketOpen) {
         // Если открыта корзина - обновляем её содержимое
         updateBasketView();
@@ -182,7 +172,7 @@ events.on('basket:remove', ({ id }: { id: string }) => {
             modal.content = updatedPreview;
         }
     }
-    
+
     // Обновляем счётчик корзины
     updateBasketCounter();
 });
@@ -278,9 +268,7 @@ events.on('modal:close', () => {
     page.locked = false;
 });
 
-// ============================================
 // ЗАГРУЗКА ДАННЫХ
-// ============================================
 
 appApi.getProducts()
     .then(data => {
