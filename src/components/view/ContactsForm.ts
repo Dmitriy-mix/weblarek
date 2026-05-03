@@ -3,28 +3,49 @@ import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 
 export class ContactsForm extends Form<{ email: string; phone: string }> {
-      protected _email: HTMLInputElement;
-    protected _phone: HTMLInputElement;
+    protected emailInput: HTMLInputElement;
+    protected phoneInput: HTMLInputElement;
 
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
-        this._email = ensureElement<HTMLInputElement>('input[name="email"]', container);
-        this._phone = ensureElement<HTMLInputElement>('input[name="phone"]', container);
+        this.emailInput = ensureElement<HTMLInputElement>('input[name="email"]', container);
+        this.phoneInput = ensureElement<HTMLInputElement>('input[name="phone"]', container);
 
-        this._email.addEventListener('input', () => {
-            events.emit('contacts:change', { field: 'email', value: this._email.value });
+        this.emailInput.addEventListener('input', () => {
+            events.emit('contacts:change', { field: 'email', value: this.emailInput.value });
+           this.updateValidity();
         });
 
-        this._phone.addEventListener('input', () => {
-            events.emit('contacts:change', { field: 'phone', value: this._phone.value });
+        this.phoneInput.addEventListener('input', () => {
+            events.emit('contacts:change', { field: 'phone', value: this.phoneInput.value });
+            this.updateValidity();
         });
+
+        this.valid = false;
     }
 
     set email(value: string) {
-        this._email.value = value;
+        this.emailInput.value = value;
     }
 
     set phone(value: string) {
-        this._phone.value = value;
+        this.phoneInput.value = value;
+    }
+
+     private updateValidity(): void {
+        const errors: { email?: string; phone?: string } = {};
+        
+        if (!this.emailInput.value.trim()) {
+            errors.email = 'Введите email';
+        }
+        if (!this.phoneInput.value.trim()) {
+            errors.phone = 'Введите номер телефона';
+        }
+        
+        const isValid = Object.keys(errors).length === 0;
+        this.valid = isValid;
+        this.errors = Object.values(errors).join('; ');
+        
+        this.events.emit('contactsForm:errors', errors);
     }
 }

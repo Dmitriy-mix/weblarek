@@ -3,40 +3,40 @@ import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 
 export class Form<T> extends Component<T> {
-    protected _form: HTMLFormElement;
-    protected _submitButton: HTMLButtonElement;
-    protected _errors: HTMLElement;
+    protected formElement: HTMLFormElement;
+    protected submitButton: HTMLButtonElement;
+    protected errorsElement: HTMLElement;
 
     constructor(container: HTMLFormElement, protected events: IEvents) {
         super(container);
-        this._form = container;
-        this._submitButton = ensureElement<HTMLButtonElement>('button[type="submit"]', container);
-        this._errors = ensureElement<HTMLElement>('.form__errors', container);
+        this.formElement = container;
+        this.submitButton = ensureElement<HTMLButtonElement>('button[type="submit"]', container);
+        this.errorsElement = ensureElement<HTMLElement>('.form__errors', container);
 
-        this._form.addEventListener('input', (e: Event) => {
+        this.formElement.addEventListener('input', (e: Event) => {
             const target = e.target as HTMLInputElement;
             const field = target.name as keyof T;
             const value = target.value;
-            this.events.emit(`${this._form.name}:change`, { field, value });
+            this.events.emit(`${this.formElement.name}:change`, { field, value });
         });
 
-        this._form.addEventListener('submit', (e: Event) => {
+        this.formElement.addEventListener('submit', (e: Event) => {
             e.preventDefault();
-            this.events.emit(`${this._form.name}:form-submit`);
+            this.events.emit(`${this.formElement.name}:form-submit`);
         });
     }
 
     set valid(value: boolean) {
-        this._submitButton.disabled = !value;
+        this.submitButton.disabled = !value;
     }
 
     set errors(value: string) {
         if (value) {
-            this._errors.textContent = value;
-            this._errors.style.display = 'block';
+            this.errorsElement.textContent = value;
+            this.errorsElement.style.display = 'block';
         } else {
-            this._errors.textContent = '';
-            this._errors.style.display = 'none';
+            this.errorsElement.textContent = '';
+            this.errorsElement.style.display = 'none';
         }
     }
 }

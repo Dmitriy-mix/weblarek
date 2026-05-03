@@ -3,20 +3,20 @@ import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 
 export class Success extends Component<{ total: number }> {
-   protected _description: HTMLElement;
-    protected _button: HTMLButtonElement;
+    protected descriptionElement: HTMLElement;
+    protected closeButton: HTMLButtonElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
-        this._description = ensureElement<HTMLElement>('.order-success__description', container);
-        this._button = ensureElement<HTMLButtonElement>('.order-success__close', container);
+        this.descriptionElement = ensureElement<HTMLElement>('.order-success__description', container);
+        this.closeButton = ensureElement<HTMLButtonElement>('.order-success__close', container);
 
-        this._button.addEventListener('click', () => {
+        this.closeButton.addEventListener('click', () => {
             this.events.emit('success:close');
         });
     }
 
     set total(value: number) {
-        this._description.textContent = `Списано ${value} синапсов`;
+        this.descriptionElement.textContent = `Списано ${value} синапсов`;
     }
 }

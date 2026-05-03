@@ -3,17 +3,17 @@ import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 
 export class Card<T> extends Component<T> {
-    protected _title: HTMLElement;
-    protected _price: HTMLElement;
+    protected titleElement: HTMLElement;
+    protected priceElement: HTMLElement;
 
     constructor(
-       container: HTMLElement,
+        container: HTMLElement,
         protected events: IEvents,
         protected actions?: { onClick?: (event: MouseEvent) => void }
     ) {
         super(container);
-        this._title = ensureElement<HTMLElement>('.card__title', container);
-        this._price = ensureElement<HTMLElement>('.card__price', container);
+        this.titleElement = ensureElement<HTMLElement>('.card__title', container);
+        this.priceElement = ensureElement<HTMLElement>('.card__price', container);
 
         if (actions?.onClick) {
             this.container.addEventListener('click', actions.onClick);
@@ -21,14 +21,14 @@ export class Card<T> extends Component<T> {
     }
 
     set title(value: string) {
-        this._title.textContent = value;
+        this.titleElement.textContent = value;
     }
 
     set price(value: number | null) {
         if (value === null || value === 0) {
-            this._price.textContent = 'Бесценно';
+            this.priceElement.textContent = 'Бесценно';
         } else {
-            this._price.textContent = `${value} синапсов`;
+            this.priceElement.textContent = `${value} синапсов`;
         }
     }
 }

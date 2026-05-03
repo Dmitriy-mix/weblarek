@@ -8,22 +8,22 @@ export interface ICardBasketActions {
 }
 
 export class CardBasket extends Card<{ product: IProduct; index: number }> {
-    protected _index: HTMLElement;
-    protected _deleteButton: HTMLButtonElement;
+    protected indexElement: HTMLElement;
+    protected deleteButton: HTMLButtonElement;
 
     constructor(container: HTMLElement, events: IEvents, actions?: ICardBasketActions) {
         super(container, events);
-        
-        this._index = ensureElement<HTMLElement>('.basket__item-index', container);
-        this._deleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', container);
+
+        this.indexElement = ensureElement<HTMLElement>('.basket__item-index', container);
+        this.deleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', container);
 
         if (actions?.onRemove) {
-            this._deleteButton.addEventListener('click', actions.onRemove);
+            this.deleteButton.addEventListener('click', actions.onRemove);
         }
     }
 
     set index(value: number) {
-        this._index.textContent = String(value);
+        this.indexElement.textContent = String(value);
     }
 
     set product(value: IProduct) {

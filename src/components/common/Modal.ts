@@ -3,19 +3,19 @@ import { Component } from '../base/Component';
 import { IEvents } from '../base/Events';
 
 export class Modal extends Component<{ content: HTMLElement }> {
-    protected _closeButton: HTMLElement;
-    protected _content: HTMLElement;
+    protected closeButton: HTMLElement;
+    protected contentElement: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
-        this._closeButton = ensureElement<HTMLElement>('.modal__close', container);
-        this._content = ensureElement<HTMLElement>('.modal__content', container);
+        this.closeButton = ensureElement<HTMLElement>('.modal__close', container);
+        this.contentElement = ensureElement<HTMLElement>('.modal__content', container);
 
-        this._closeButton.addEventListener('click', () => {
+        this.closeButton.addEventListener('click', () => {
             this.events.emit('modal:close');
             this.close();
         });
-        
+
         this.container.addEventListener('click', (e) => {
             if (e.target === this.container) {
                 this.events.emit('modal:close');
@@ -30,10 +30,10 @@ export class Modal extends Component<{ content: HTMLElement }> {
 
     close(): void {
         this.container.classList.remove('modal_active');
-        this._content.innerHTML = '';
+        this.contentElement.innerHTML = '';
     }
 
     set content(value: HTMLElement) {
-        this._content.replaceChildren(value);
+        this.contentElement.replaceChildren(value);
     }
 }

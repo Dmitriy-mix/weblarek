@@ -6,7 +6,7 @@ export interface IApi {
 }
 
 
-export type TPayment = 'cash' | 'card';
+export type TPayment = 'cash' | 'card' | null;
 
 
 export interface IProduct {
@@ -20,14 +20,14 @@ export interface IProduct {
 }
 
 export interface IBuyer {
-  payment: TPayment | null;
+  payment: TPayment;
   email: string;
   phone: string;
   address: string;
 }
 
 export interface IOrder {
-  payment: TPayment | null;
+  payment: TPayment;
   email: string;
   phone: string;
   address: string;
