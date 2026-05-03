@@ -11,29 +11,26 @@ export class Modal extends Component<{ content: HTMLElement }> {
         this._closeButton = ensureElement<HTMLElement>('.modal__close', container);
         this._content = ensureElement<HTMLElement>('.modal__content', container);
 
-        if (!this._closeButton || !this._content) {
-            throw new Error('Modal: обязательные элементы не найдены');
-        }
-
-        this._closeButton.addEventListener('click', () => this.close());
+        this._closeButton.addEventListener('click', () => {
+            this.events.emit('modal:close');
+            this.close();
+        });
+        
         this.container.addEventListener('click', (e) => {
-            if (e.target === this.container) this.close();
+            if (e.target === this.container) {
+                this.events.emit('modal:close');
+                this.close();
+            }
         });
     }
 
     open(): void {
         this.container.classList.add('modal_active');
-        this.events.emit('modal:open');
     }
 
     close(): void {
         this.container.classList.remove('modal_active');
         this._content.innerHTML = '';
-        this.events.emit('modal:close');
-    }
-
-    get isOpen(): boolean {
-        return this.container.classList.contains('modal_active');
     }
 
     set content(value: HTMLElement) {

@@ -1,43 +1,33 @@
-import { Component } from '../base/Component';
 import { IProduct } from '../../types';
 import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
+import { Card } from '../common/Card';
 
-export class CardBasket extends Component<{ product: IProduct; index: number }> {
-    protected _title: HTMLElement;
-    protected _price: HTMLElement;
+export interface ICardBasketActions {
+    onRemove?: () => void;
+}
+
+export class CardBasket extends Card<{ product: IProduct; index: number }> {
     protected _index: HTMLElement;
     protected _deleteButton: HTMLButtonElement;
-    protected _productId!: string;
 
-    constructor(container: HTMLElement, protected events: IEvents, onRemove: (id: string) => void) {
-        super(container);
-        this._title = ensureElement<HTMLInputElement>('.card__title', container);
-        this._price = ensureElement<HTMLInputElement>('.card__price', container);
-        this._index = ensureElement<HTMLInputElement>('.basket__item-index', container);
+    constructor(container: HTMLElement, events: IEvents, actions?: ICardBasketActions) {
+        super(container, events);
+        
+        this._index = ensureElement<HTMLElement>('.basket__item-index', container);
         this._deleteButton = ensureElement<HTMLButtonElement>('.basket__item-delete', container);
 
-
-        if (!this._title || !this._price || !this._index || !this._deleteButton) {
-            throw new Error('CardBasket: обязательные элементы не найдены');
+        if (actions?.onRemove) {
+            this._deleteButton.addEventListener('click', actions.onRemove);
         }
-
-        this._deleteButton.addEventListener('click', () => onRemove(this._productId));
-    }
-
-    set product(value: IProduct) {
-        this._productId = value.id;
-        this._title.textContent = value.title;
-        this._price.textContent = value.price ? `${value.price} синапсов` : 'Бесценно';
     }
 
     set index(value: number) {
         this._index.textContent = String(value);
     }
 
-    render(data: { product: IProduct; index: number }): HTMLElement {
-        this.product = data.product;
-        this.index = data.index;
-        return this.container;
+    set product(value: IProduct) {
+        this.title = value.title;
+        this.price = value.price;
     }
 }

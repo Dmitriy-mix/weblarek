@@ -15,18 +15,19 @@ export interface IProduct {
   image: string;
   title: string;
   category: string;
+  inBasket?: boolean;
   price: number | null;
 }
 
 export interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | null;
   email: string;
   phone: string;
   address: string;
 }
 
 export interface IOrder {
-  payment: TPayment;
+  payment: TPayment | null;
   email: string;
   phone: string;
   address: string;
@@ -38,3 +39,5 @@ export interface IOrderResult {
   id: string;
   total: number;
 }
+
+export type TBuyerValidationErrors = Partial<Record<keyof IBuyer, string>>;

@@ -13,10 +13,6 @@ export class Basket extends Component<{ items: HTMLElement[]; total: number }> {
         this._totalPrice = ensureElement<HTMLElement>('.basket__price', container);
         this._button = ensureElement<HTMLButtonElement>('.basket__button', container);
 
-        if (!this._list || !this._totalPrice || !this._button) {
-            throw new Error('Basket: обязательные элементы не найдены');
-        }
-
         this._button.addEventListener('click', () => events.emit('order:submit'));
     }
 
