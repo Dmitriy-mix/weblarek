@@ -57,7 +57,6 @@ function getImageUrl(path: string): string {
     return `${CDN_URL}/${cleanPath}`;
 }
 
-
 function createCardCatalog(product: IProduct): HTMLElement {
     const container = cloneTemplate(cardCatalogTemplate);
     const card = new CardCatalog(container, events, {
@@ -191,7 +190,6 @@ events.on('order:submit', () => {
     modal.open();
 });
 
-
 // Изменение полей формы заказа
 events.on('order:change', ({ field, value }: { field: string; value: string }) => {
     if (field === 'address') {
@@ -200,7 +198,6 @@ events.on('order:change', ({ field, value }: { field: string; value: string }) =
         buyer.setData({ payment: value as 'cash' | 'card' });
     }
 });
-
 
 // Сабмит формы заказа → переход к контактам
 events.on('order:form-submit', () => {
@@ -251,11 +248,13 @@ events.on('success:close', () => {
     modal.close();
 });
 
+// Валидация
 events.on('orderForm:errors', (errors) => {
     const isValid = Object.keys(errors).length === 0;
     events.emit('order:validation', { valid: isValid });
 });
 
+// Валидация
 events.on('contactsForm:errors', (errors) => {
     const isValid = Object.keys(errors).length === 0;
     events.emit('contacts:validation', { valid: isValid });
