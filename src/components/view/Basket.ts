@@ -21,10 +21,10 @@ export class Basket extends Component<{ items: HTMLElement[]; total: number }> {
     }
 
     set total(value: number) {
-        this.totalPriceElement.textContent = `${value} синапсов`;
+        this.setText(this.totalPriceElement, `${value} синапсов`);
     }
 
     set disabled(value: boolean) {
-        this.buttonElement.disabled = value;
+        this.setDisabled(this.buttonElement, value);
     }
 }

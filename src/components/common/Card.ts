@@ -14,21 +14,17 @@ export class Card<T> extends Component<T> {
         super(container);
         this.titleElement = ensureElement<HTMLElement>('.card__title', container);
         this.priceElement = ensureElement<HTMLElement>('.card__price', container);
-
-        if (actions?.onClick) {
-            this.container.addEventListener('click', actions.onClick);
-        }
     }
 
     set title(value: string) {
-        this.titleElement.textContent = value;
+        this.setText(this.titleElement, value);
     }
 
     set price(value: number | null) {
         if (value === null || value === 0) {
-            this.priceElement.textContent = 'Бесценно';
+            this.setText(this.priceElement, 'Бесценно');
         } else {
-            this.priceElement.textContent = `${value} синапсов`;
+            this.setText(this.priceElement, `${value} синапсов`);
         }
     }
 }

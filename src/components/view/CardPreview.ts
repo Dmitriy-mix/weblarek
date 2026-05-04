@@ -13,7 +13,6 @@ export class CardPreview extends Card<IProduct> {
     protected imageElement: HTMLImageElement;
     protected descriptionElement: HTMLElement;
     protected buttonElement: HTMLButtonElement;
-    protected inBasketStatus: boolean = false;
 
     constructor(
         container: HTMLElement, events: IEvents, actions?: ICardPreviewActions
@@ -40,32 +39,20 @@ export class CardPreview extends Card<IProduct> {
     }
 
     set image(value: string) {
-        this.imageElement.src = value;
-        this.imageElement.alt = this.titleElement.textContent || '';
+        this.setImage(this.imageElement, value, this.title);
     }
 
     set description(value: string) {
-        this.descriptionElement.textContent = value;
+        this.setText(this.descriptionElement, value);
     }
 
-    set price(value: number | null) {
-        super.price = value;
-        if (value === null || value === 0) {
-            this.buttonElement.disabled = true;
-            this.buttonElement.textContent = 'Недоступно';
-            this.inBasketStatus = false;
-        } else {
-            this.buttonElement.disabled = false;
-            if (!this.inBasketStatus) {
-                this.buttonElement.textContent = 'В корзину';
-            }
-        }
+    set buttonText(value: string) {
+        this.setText(this.buttonElement, value);
     }
 
-     set inBasket(value: boolean) {
-        this.inBasketStatus = value;
-       if (this.buttonElement.textContent !== 'Недоступно') {
-            this.buttonElement.textContent = value ? 'Убрать из корзины' : 'В корзину';
-        }
+    set buttonDisabled(value: boolean) {
+        this.setDisabled(this.buttonElement, value);
     }
+
+
 }

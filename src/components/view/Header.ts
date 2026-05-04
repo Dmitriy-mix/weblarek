@@ -15,7 +15,7 @@ export class Header extends Component<{ counter: number; }> {
     }
 
     set counter(value: number) {
-        this.basketCounterElement.textContent = String(value);
+        this.setText(this.basketCounterElement, String(value));
     }
 
 }

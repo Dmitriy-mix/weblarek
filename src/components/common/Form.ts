@@ -27,16 +27,10 @@ export class Form<T> extends Component<T> {
     }
 
     set valid(value: boolean) {
-        this.submitButton.disabled = !value;
+        this.setDisabled(this.submitButton, !value);
     }
 
     set errors(value: string) {
-        if (value) {
-            this.errorsElement.textContent = value;
-            this.errorsElement.style.display = 'block';
-        } else {
-            this.errorsElement.textContent = '';
-            this.errorsElement.style.display = 'none';
-        }
+        this.setText(this.errorsElement, value);
     }
 }

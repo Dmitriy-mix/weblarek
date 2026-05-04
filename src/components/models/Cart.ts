@@ -2,38 +2,38 @@ import { IProduct } from '../../types';
 import { IEvents } from '../base/Events';
 
 export class Cart {
-    private _items: IProduct[] = [];
+    private items: IProduct[] = [];
 
-    constructor(protected events: IEvents) {}
+    constructor(protected events: IEvents) { }
 
     getItems(): IProduct[] {
-        return this._items;
+        return this.items;
     }
 
     addItem(product: IProduct): void {
-        this._items.push(product);
-        this.events.emit('cart:changed'); // без данных
+        this.items.push(product);
+        this.events.emit('cart:changed');
     }
 
     removeItem(productId: string): void {
-        this._items = this._items.filter(item => item.id !== productId);
-        this.events.emit('cart:changed'); // без данных
+        this.items = this.items.filter(item => item.id !== productId);
+        this.events.emit('cart:changed');
     }
 
     clear(): void {
-        this._items = [];
-        this.events.emit('cart:changed'); // без данных
+        this.items = [];
+        this.events.emit('cart:changed');
     }
 
     getTotalPrice(): number {
-        return this._items.reduce((sum, item) => sum + (item.price ?? 0), 0);
+        return this.items.reduce((sum, item) => sum + (item.price ?? 0), 0);
     }
 
     getItemCount(): number {
-        return this._items.length;
+        return this.items.length;
     }
 
     contains(productId: string): boolean {
-        return this._items.some(item => item.id === productId);
+        return this.items.some(item => item.id === productId);
     }
 }

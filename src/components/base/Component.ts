@@ -15,14 +15,6 @@ export abstract class Component<T> {
         }
     }
 
-    protected setHidden(element: HTMLElement): void {
-        if (element) element.style.display = 'none';
-    }
-
-    protected setVisible(element: HTMLElement): void {
-        if (element) element.style.display = '';
-    }
-
     protected setImage(element: HTMLImageElement, src: string, alt?: string): void {
         if (element) {
             element.src = src;

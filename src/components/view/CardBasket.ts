@@ -23,7 +23,7 @@ export class CardBasket extends Card<{ product: IProduct; index: number }> {
     }
 
     set index(value: number) {
-        this.indexElement.textContent = String(value);
+        this.setText(this.indexElement, String(value));
     }
 
     set product(value: IProduct) {

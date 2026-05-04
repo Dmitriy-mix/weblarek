@@ -15,23 +15,12 @@ export class OrderForm extends Form<{ payment: TPayment | null; address: string 
         this.addressInput = ensureElement<HTMLInputElement>('input[name="address"]', container);
 
         this.paymentOnlineButton.addEventListener('click', () => {
-            this.payment = 'card';
-            events.emit('order:change', { field: 'payment', value: 'card' });
-            this.updateValidity(events);
+            this.events.emit('order:payment-change', { payment: 'card' });
         });
 
         this.paymentCashButton.addEventListener('click', () => {
-            this.payment = 'cash';
-            events.emit('order:change', { field: 'payment', value: 'cash' });
-            this.updateValidity(events);
+            this.events.emit('order:payment-change', { payment: 'cash' });
         });
-
-        this.addressInput.addEventListener('input', () => {
-            events.emit('order:change', { field: 'address', value: this.addressInput.value });
-            this.updateValidity(events);
-        });
-
-        this.valid = false;
     }
 
     set payment(value: TPayment | null) {
@@ -49,23 +38,4 @@ export class OrderForm extends Form<{ payment: TPayment | null; address: string 
         this.addressInput.value = value;
     }
 
-    private updateValidity(events: IEvents): void {
-        const errors: { payment?: string; address?: string } = {};
-
-        const isPaymentSelected = this.paymentOnlineButton.classList.contains('button_alt-active') ||
-            this.paymentCashButton.classList.contains('button_alt-active');
-
-        if (!isPaymentSelected) {
-            errors.payment = 'Выберите способ оплаты';
-        }
-        if (!this.addressInput.value.trim()) {
-            errors.address = 'Введите адрес доставки';
-        }
-
-        const isValid = Object.keys(errors).length === 0;
-        this.valid = isValid;
-        this.errors = Object.values(errors).join('; ');
-
-        events.emit('orderForm:errors', errors);
-    }
 }
